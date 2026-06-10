@@ -1,0 +1,128 @@
+-- 1. KHOI TAO CO SO DU LIEU
+CREATE DATABASE IF NOT EXISTS quanLyCaPheDb
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+USE quanLyCaPheDb;
+
+-- 2. BANG CAU HINH HE THONG
+CREATE TABLE IF NOT EXISTS cauHinhHeThong (
+    khoaCauHinh VARCHAR(50) PRIMARY KEY,
+    giaTriCauHinh VARCHAR(255) NOT NULL,
+    thoiGianCapNhat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 3. BANG TAI KHOAN NGUOI DUNG
+CREATE TABLE IF NOT EXISTS nguoiDung (
+    idNguoiDung INT AUTO_INCREMENT PRIMARY KEY,
+    tenDangNhap VARCHAR(50) NOT NULL UNIQUE,
+    matKhauMaHoa VARCHAR(255) NOT NULL,
+    hoTenNguoiDung VARCHAR(100) NOT NULL,
+    vaiTroNguoiDung ENUM('ADMIN', 'STAFF') NOT NULL DEFAULT 'STAFF',
+    trangThaiHoatDong ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    thoiGianTao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 4. BANG BAN
+CREATE TABLE IF NOT EXISTS banQuanAn (
+    idBan INT AUTO_INCREMENT PRIMARY KEY,
+    tenBan VARCHAR(30) NOT NULL UNIQUE,
+    trangThaiBan ENUM('FREE', 'BUSY') NOT NULL DEFAULT 'FREE'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 5. BANG MON AN
+CREATE TABLE IF NOT EXISTS monAn (
+    idMonAn INT AUTO_INCREMENT PRIMARY KEY,
+    tenMonAn VARCHAR(100) NOT NULL UNIQUE,
+    danhMucMonAn ENUM('COFFEE_MACHINE', 'COFFEE_TRADITIONAL', 'BAKERY', 'COMBO') NOT NULL,
+    giaMonAnCoBan DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    moTaMonAn TEXT,
+    bieuTuongMonAn VARCHAR(10) DEFAULT '☕',
+    trangThaiMonAn ENUM('AVAILABLE', 'OUT_OF_STOCK') NOT NULL DEFAULT 'AVAILABLE'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 6. BANG THANH PHAN COMBO
+CREATE TABLE IF NOT EXISTS thanhPhanCombo (
+    idCombo INT NOT NULL,
+    idMonAnCon INT NOT NULL,
+    soLuongMonCon INT NOT NULL DEFAULT 1,
+    PRIMARY KEY (idCombo, idMonAnCon),
+    CONSTRAINT fk_thanhPhanCombo_combo
+        FOREIGN KEY (idCombo) REFERENCES monAn(idMonAn)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_thanhPhanCombo_monCon
+        FOREIGN KEY (idMonAnCon) REFERENCES monAn(idMonAn)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 7. BANG TUY CHON MON
+CREATE TABLE IF NOT EXISTS tuyChonMon (
+    idTuyChon INT AUTO_INCREMENT PRIMARY KEY,
+    tenTuyChon VARCHAR(50) NOT NULL UNIQUE,
+    giaPhuThu DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    trangThaiTuyChon ENUM('AVAILABLE', 'OUT_OF_STOCK') NOT NULL DEFAULT 'AVAILABLE'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 8. BANG HOA DON
+CREATE TABLE IF NOT EXISTS hoaDon (
+    idHoaDon VARCHAR(50) PRIMARY KEY,
+    idBan INT NULL,
+    idNguoiDung INT NULL,
+    trangThaiHoaDon ENUM('PENDING', 'PAID', 'CANCELLED') NOT NULL DEFAULT 'PAID',
+    tongTienChuaThue DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    tienThueGiaTriGiaTang DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    tienGiamGiaKhuyenMai DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    tongTienThucThu DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    phuongThucThanhToan ENUM('CASH', 'TRANSFER', 'CARD') NOT NULL DEFAULT 'CASH',
+    soTienKhachDua DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    tienTraLai DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    thoiGianTao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_hoaDon_ban
+        FOREIGN KEY (idBan) REFERENCES banQuanAn(idBan)
+        ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT fk_hoaDon_nguoiDung
+        FOREIGN KEY (idNguoiDung) REFERENCES nguoiDung(idNguoiDung)
+        ON DELETE SET NULL ON UPDATE CASCADE,
+
+    INDEX idx_hoaDon_idBan (idBan),
+    INDEX idx_hoaDon_thoiGianTao (thoiGianTao)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 9. BANG CHI TIET DON HANG
+CREATE TABLE IF NOT EXISTS chiTietDonHang (
+    idChiTietDonHang INT AUTO_INCREMENT PRIMARY KEY,
+    idHoaDon VARCHAR(50) NOT NULL,
+    idMonAn INT NOT NULL,
+    soLuongDat INT NOT NULL DEFAULT 1,
+    giaBanTaiThoiDiem DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    tongTienSauTrangTri DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+
+    CONSTRAINT fk_chiTietDonHang_hoaDon
+        FOREIGN KEY (idHoaDon) REFERENCES hoaDon(idHoaDon)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_chiTietDonHang_monAn
+        FOREIGN KEY (idMonAn) REFERENCES monAn(idMonAn)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+
+    INDEX idx_chiTietDonHang_idHoaDon (idHoaDon),
+    INDEX idx_chiTietDonHang_idMonAn (idMonAn)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 10. BANG CHI TIET TUY CHON CUA MON DAT
+CREATE TABLE IF NOT EXISTS chiTietTuyChonMonDat (
+    idChiTietDonHang INT NOT NULL,
+    idTuyChon INT NOT NULL,
+    giaPhuThuTaiThoiDiem DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    PRIMARY KEY (idChiTietDonHang, idTuyChon),
+
+    CONSTRAINT fk_chiTietTuyChon_chiTietDonHang
+        FOREIGN KEY (idChiTietDonHang) REFERENCES chiTietDonHang(idChiTietDonHang)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_chiTietTuyChon_tuyChon
+        FOREIGN KEY (idTuyChon) REFERENCES tuyChonMon(idTuyChon)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+) 
+
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
