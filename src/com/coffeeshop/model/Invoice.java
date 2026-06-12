@@ -10,7 +10,6 @@ public class Invoice {
     private Integer tableId;
     private Integer userId;
     private List<InvoiceItem> items = new ArrayList<>();
-
     private double subtotal;
     private double vatAmount;
     private double discountAmount;

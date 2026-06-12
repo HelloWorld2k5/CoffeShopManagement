@@ -4,7 +4,6 @@ import com.coffeeshop.config.DatabaseConnection;
 import com.coffeeshop.model.User;
 import com.coffeeshop.model.UserRole;
 import com.coffeeshop.model.UserStatus;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,4 +118,16 @@ public class UserRepository {
             UserStatus.valueOf(rs.getString("trangThaiHoatDong"))
         );
     }
+
+    public boolean delete(int userId) {
+    String sql = "DELETE FROM nguoiDung WHERE idNguoiDung = ?";
+    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, userId);
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 }

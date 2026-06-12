@@ -1,0 +1,57 @@
+package com.coffeeshop.decorator;
+
+import com.coffeeshop.model.MenuItem;
+
+public class CaramelSyrupDecorator extends CoffeeDecorator {
+    private double priceExtra;
+
+    public CaramelSyrupDecorator(MenuItem item, double priceExtra) {
+        super(item);
+        this.priceExtra = priceExtra;
+    }
+
+    @Override
+    public double getFinalPrice() {
+        return super.getFinalPrice() + priceExtra;
+    }
+
+    @Override
+    public String getDescription() {
+        return super.getDescription() + " (+ Caramel Syrup)";
+    }
+
+    @Override
+    public String getName() {
+        return decoratedItem.getName() + " + Caramel Syrup";
+    }
+
+    @Override
+    public void setName(String name) {
+        decoratedItem.setName(name);
+    }
+
+    @Override
+    public void setBasePrice(double basePrice) {
+        decoratedItem.setBasePrice(basePrice);
+    }
+
+    @Override
+    public void setIcon(String icon) {
+        decoratedItem.setIcon(icon);
+    }
+
+    @Override
+    public void setDescription(String description) {
+        decoratedItem.setDescription(description);
+    }
+
+    @Override
+    public void setCategory(String category) {
+        decoratedItem.setCategory(category);
+    }
+
+    @Override
+    public void setStatus(String status) {
+        decoratedItem.setStatus(status);
+    }
+}

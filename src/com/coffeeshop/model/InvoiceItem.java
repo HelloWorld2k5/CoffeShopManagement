@@ -12,16 +12,18 @@ public class InvoiceItem {
     private int quantityOrdered;
     private double priceAtTime;
     private double totalAmountAfterDiscount;
+    private String toppings;
 
     public InvoiceItem() {}
 
     public InvoiceItem(int dishId, String dishName, int quantityOrdered,
-                       double priceAtTime, double totalAmountAfterDiscount) {
+                       double priceAtTime, double totalAmountAfterDiscount,String toppings) {
         this.dishId = dishId;
         this.dishName = dishName;
         this.quantityOrdered = quantityOrdered;
         this.priceAtTime = priceAtTime;
         this.totalAmountAfterDiscount = totalAmountAfterDiscount;
+        this.toppings = toppings;
     }
 
     public InvoiceItem(InvoiceItem other) {
@@ -30,6 +32,7 @@ public class InvoiceItem {
         quantityOrdered = other.getQuantityOrdered();
         priceAtTime = other.getPriceAtTime();
         totalAmountAfterDiscount = other.getTotalAmountAfterDiscount();
+        toppings = other.getToppings();
     }
 
     public InvoiceItem clone() {
@@ -75,4 +78,6 @@ public class InvoiceItem {
     public void setTotalAmountAfterDiscount(double totalAmountAfterDiscount) {
         this.totalAmountAfterDiscount = totalAmountAfterDiscount;
     }
+    public String getToppings() { return toppings; }
+    public void setToppings(String toppings) { this.toppings = toppings; }
 }

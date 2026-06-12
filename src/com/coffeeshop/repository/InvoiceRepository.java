@@ -4,7 +4,6 @@ import com.coffeeshop.config.DatabaseConnection;
 import com.coffeeshop.model.Invoice;
 import com.coffeeshop.model.InvoiceItem;
 import com.coffeeshop.model.PaymentMethod;
-
 import java.sql.*;
 import java.time.LocalDateTime;
 
@@ -108,24 +107,62 @@ public class InvoiceRepository {
         return null;
     }
 
-    private java.util.List<InvoiceItem> loadInvoiceItems(java.sql.Connection conn, String invoiceId) {
-        java.util.List<InvoiceItem> items = new java.util.ArrayList<>();
-        String sql = "SELECT * FROM chiTietDonHang WHERE idHoaDon = ?";
-        try (java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, invoiceId);
-            java.sql.ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                InvoiceItem item = new InvoiceItem(
-                        rs.getInt("idMonAn"),
-                        "", // dishName will be empty (could load from monAn table if needed)
-                        rs.getInt("soLuongDat"),
-                        rs.getDouble("giaBanTaiThoiDiem"),
-                        rs.getDouble("tongTienSauTrangTri"));
-                items.add(item);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+private java.util.List<InvoiceItem> loadInvoiceItems(java.sql.Connection conn, String invoiceId) {
+    java.util.List<InvoiceItem> items = new java.util.ArrayList<>();
+    
+    // Sử dụng LEFT JOIN để lấy món ăn và gộp các Topping lại thành 1 chuỗi
+    String sql = "SELECT c.*, m.tenMonAn, " +
+                 "GROUP_CONCAT(t.tenTuyChon SEPARATOR ', ') AS toppings " +
+                 "FROM chiTietDonHang c " +
+                 "JOIN monAn m ON c.idMonAn = m.idMonAn " +
+                 "LEFT JOIN chiTietTuyChonMonDat ct ON c.idChiTietDonHang = ct.idChiTietDonHang " +
+                 "LEFT JOIN tuyChonMon t ON ct.idTuyChon = t.idTuyChon " +
+                 "WHERE c.idHoaDon = ? " +
+                 "GROUP BY c.idChiTietDonHang";
+
+    try (java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, invoiceId);
+        java.sql.ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            // Lấy giá trị chuỗi topping (nếu không có thì trả về null hoặc rỗng)
+            String toppingList = rs.getString("toppings");
+            
+            InvoiceItem item = new InvoiceItem(
+                    rs.getInt("idMonAn"),
+                    rs.getString("tenMonAn"), 
+                    rs.getInt("soLuongDat"),
+                    rs.getDouble("giaBanTaiThoiDiem"),
+                    rs.getDouble("tongTienSauTrangTri"),
+                    (toppingList == null ? "" : toppingList) // Xử lý nếu món không có topping
+            );
+            
+            items.add(item);
         }
-        return items;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return items;
+}
+    // Trong class InvoiceRepository
+public java.util.List<Invoice> getAllInvoices() {
+    java.util.List<Invoice> list = new java.util.ArrayList<>();
+    String sql = "SELECT * FROM hoaDon ORDER BY thoiGianTao DESC"; // Mới nhất lên đầu
+    
+    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            Invoice invoice = new Invoice(rs.getString("idHoaDon"));
+            invoice.setTableId((Integer) rs.getObject("idBan"));
+            invoice.setTotalAmount(rs.getDouble("tongTienThucThu"));
+            invoice.setCreatedAt(rs.getTimestamp("thoiGianTao").toLocalDateTime());
+            invoice.setPaymentMethod(PaymentMethod.valueOf(rs.getString("phuongThucThanhToan")));
+            list.add(invoice);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
 }

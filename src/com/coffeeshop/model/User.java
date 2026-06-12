@@ -67,4 +67,9 @@ public class User {
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
     }
+
+    // Thêm vào class User
+public String getRole() {
+    return (this.userRole != null) ? this.userRole.name() : "STAFF";
+}
 }

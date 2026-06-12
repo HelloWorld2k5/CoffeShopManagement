@@ -1,5 +1,9 @@
 * DỰ ÁN NÀY DÙNG JDK 21 VÀ DÙNG VSCODE ĐỂ LÀM (YÊU CẦU TẢI JDK21 RỒI ADD ENVIRONMENT VÀ TẢI EXTENSION JAVA TRÊN VSCODE)
 
+
+*Tài khoản admin mật khẩu admin
+* tài khoản staff01 mật khẩu 123
+
 * Thư viện ngoài:
     - mysql-connector 9.4.0 (Vào Referenced Library trong dự án để add file .jar vào)
 
@@ -28,7 +32,7 @@ coffee-shop-management/
 │           │   ├── OrderItem.java
 │           │   ├── Invoice.java
 │           │   └── OrderState.java
-│           │   view có thêm LoginFrame.java, RegisterFrame.java
+│           │  
 │           ├── view/
 │           │   ├── MainFrame.java
 │           │   ├── SidebarPanel.java
@@ -36,24 +40,28 @@ coffee-shop-management/
 │           │   ├── CartPanel.java
 │           │   ├── CheckoutDialog.java
 │           │   └── DrinkOptionDialog.java
-│           │   controller có thêm AuthController.java
+|           |   |__ LoginFrame.java    
+│           │   
 │           ├── controller/
 │           │   ├── MenuController.java
 │           │   ├── CartController.java
 │           │   ├── CheckoutController.java
 │           │   └── AuthController.java
-│           │   service có thêm AuthService.java
+|           |   
+│           │   
 │           ├── service/
 │           │   ├── OrderService.java
 │           │   ├── InvoiceService.java
 │           │   ├── PaymentService.java
 │           │   └── CloneOrderService.java
-│           │   repository có thêm AuthRepository.java
+|           |   |__ AuthService.java
+│           │   
 │           ├── repository/
 │           │   ├── MenuRepository.java
 │           │   ├── OrderRepository.java
 │           │   ├── InvoiceRepository.java
 │           │   └── UserRepository.java
+|           |   |__ AuthRepository.java
 │           │
 │           ├── factory/
 │           │   ├── CoffeeFactory.java
