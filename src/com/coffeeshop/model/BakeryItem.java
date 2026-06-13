@@ -19,6 +19,16 @@ public class BakeryItem implements MenuItem {
         this.status = status;
     }
 
+    public BakeryItem(BakeryItem other) {
+        id = other.getId();
+        name = other.getName();
+        category = other.getCategory();
+        basePrice = other.getBasePrice();
+        description = other.getDescription();
+        icon = other.getIcon();
+        status = other.getStatus(); 
+    }
+
     @Override public int getId() { return id; }
     @Override public String getName() { return name; }
     @Override public String getCategory() { return category; }
@@ -35,4 +45,8 @@ public class BakeryItem implements MenuItem {
     @Override public void setDescription(String description) { this.description = description; }
     @Override public void setIcon(String icon) { this.icon = icon; }
     @Override public void setStatus(String status) { this.status = status; }
+    @Override
+    public BakeryItem clone() {
+        return new BakeryItem(this);
+    }
 }

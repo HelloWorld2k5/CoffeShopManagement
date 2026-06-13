@@ -14,7 +14,7 @@ public class InvoiceHistoryPanel extends JPanel {
     private final InvoiceRepository invoiceRepository = new InvoiceRepository();
 
     // Màu cam đất (Earthy Orange)
-    private final Color EARTHY_ORANGE = new Color(202, 81, 0); 
+    private final Color EARTHY_ORANGE = new Color(202, 81, 0);
 
     public InvoiceHistoryPanel() {
         // ... (Giữ nguyên phần khởi tạo như cũ)
@@ -23,7 +23,7 @@ public class InvoiceHistoryPanel extends JPanel {
         setBackground(new Color(245, 246, 247));
 
         // ... (Header và Table setup)
-        String[] columns = {"Mã Hóa Đơn", "Bàn", "Thành Tiền", "Thời Gian", "Hình thức", "Hành động"};
+        String[] columns = { "Mã Hóa Đơn", "Bàn", "Thành Tiền", "Thời Gian", "Hình thức", "Hành động" };
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -47,15 +47,19 @@ public class InvoiceHistoryPanel extends JPanel {
 
         for (Invoice inv : invoices) {
             Object[] row = {
-                inv.getInvoiceId(),
-                inv.getTableId() != null ? "Bàn " + inv.getTableId() : "Mang về",
-                String.format("%,.0f đ", inv.getTotalAmount()),
-                inv.getCreatedAt() != null ? inv.getCreatedAt().format(formatter) : "",
-                inv.getPaymentMethod(),
-                "Xem Chi Tiết"
+                    inv.getInvoiceId(),
+                    inv.getTableId() != null ? "Bàn " + inv.getTableId() : "Mang về",
+                    String.format("%,.0f đ", inv.getTotalAmount()),
+                    inv.getCreatedAt() != null ? inv.getCreatedAt().format(formatter) : "",
+                    inv.getPaymentMethod(),
+                    "Xem Chi Tiết"
             };
             tableModel.addRow(row);
         }
+    }
+
+    public void refresh() {
+        loadDataToTable();
     }
 
     // --- CÁC INNER CLASSES PHẢI ĐẶT TRONG DẤU NGOẶC CỦA InvoiceHistoryPanel ---
@@ -64,10 +68,12 @@ public class InvoiceHistoryPanel extends JPanel {
         public ButtonRenderer() {
             setOpaque(true);
             setBackground(EARTHY_ORANGE); // Màu cam đất
-            setForeground(Color.WHITE);   // Chữ trắng
+            setForeground(Color.WHITE); // Chữ trắng
             setBorderPainted(false);
         }
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+                int row, int column) {
             setText((value == null) ? "" : value.toString());
             return this;
         }
@@ -82,18 +88,19 @@ public class InvoiceHistoryPanel extends JPanel {
             button = new JButton();
             button.setOpaque(true);
             button.setBackground(EARTHY_ORANGE); // Màu cam đất
-            button.setForeground(Color.WHITE);   // Chữ trắng
+            button.setForeground(Color.WHITE); // Chữ trắng
             button.setFocusPainted(false);
-            
+
             button.addActionListener(e -> {
                 fireEditingStopped();
                 int row = table.getSelectedRow();
-                if(row != -1) {
+                if (row != -1) {
                     String invoiceId = table.getValueAt(row, 0).toString();
                     Invoice fullInvoice = invoiceRepository.findById(invoiceId);
-                    
+
                     if (fullInvoice != null) {
-                        InvoiceDetailDialog dialog = new InvoiceDetailDialog((JFrame) SwingUtilities.getWindowAncestor(table), fullInvoice);
+                        InvoiceDetailDialog dialog = new InvoiceDetailDialog(
+                                (JFrame) SwingUtilities.getWindowAncestor(table), fullInvoice);
                         dialog.setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(null, "Không tìm thấy chi tiết hóa đơn!");
@@ -102,12 +109,16 @@ public class InvoiceHistoryPanel extends JPanel {
             });
         }
 
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+                int column) {
             label = "Xem Chi Tiết";
             button.setText(label);
             return button;
         }
 
-        public Object getCellEditorValue() { return label; }
+        public Object getCellEditorValue() {
+            return label;
+        }
     }
-} // <--- Đảm bảo class InvoiceHistoryPanel KẾT THÚC Ở ĐÂY (dấu ngoặc này đóng tất cả)
+} // <--- Đảm bảo class InvoiceHistoryPanel KẾT THÚC Ở ĐÂY (dấu ngoặc này đóng tất
+  // cả)

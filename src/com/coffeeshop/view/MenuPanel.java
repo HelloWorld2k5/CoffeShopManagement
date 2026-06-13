@@ -15,22 +15,22 @@ import javax.swing.border.TitledBorder;
 public class MenuPanel extends JPanel {
     private MenuRepository menuRepository = new MenuRepository();
     private CartSubject cartSubject;
-    
+
     private JTextField txtSearch;
     private JButton btnSearch;
     private JRadioButton rdoAll, rdoCoffee, rdoBakery, rdoCombo;
     private ButtonGroup filterGroup;
     private JButton btnAddNewItem;
-    
+
     private JPanel pnlGridMenu;
     private String currentCategoryFilter = "ALL";
 
     // MÃ MÀU THEO THIẾT KẾ COFFEE BROWN PREMIUM SPECIFICATION
-    private final Color COLOR_COFFEE_BROWN  = new Color(0x5C, 0x40, 0x33); // Nâu cà phê đậm chủ đạo
-    private final Color COLOR_WARM_CREAM     = new Color(0xFF, 0xF8, 0xDC); // Nền Kem/Be ấm áp cao cấp
-    private final Color COLOR_ESPRESSO_TEXT  = new Color(0x3A, 0x2E, 0x1F); // Nâu Espresso siêu đậm cho chữ
-    private final Color COLOR_LATTE_LIGHT    = new Color(0x96, 0x79, 0x69); // Nâu Latte nhẹ cho nhãn phụ
-    private final Color COLOR_WARM_COPPER    = new Color(0xB8, 0x73, 0x33); // Đồng ấm sáng cho nút hành động chính
+    private final Color COLOR_COFFEE_BROWN = new Color(0x5C, 0x40, 0x33); // Nâu cà phê đậm chủ đạo
+    private final Color COLOR_WARM_CREAM = new Color(0xFF, 0xF8, 0xDC); // Nền Kem/Be ấm áp cao cấp
+    private final Color COLOR_ESPRESSO_TEXT = new Color(0x3A, 0x2E, 0x1F); // Nâu Espresso siêu đậm cho chữ
+    private final Color COLOR_LATTE_LIGHT = new Color(0x96, 0x79, 0x69); // Nâu Latte nhẹ cho nhãn phụ
+    private final Color COLOR_WARM_COPPER = new Color(0xB8, 0x73, 0x33); // Đồng ấm sáng cho nút hành động chính
 
     public MenuPanel(CartSubject cartSubject) {
         this.cartSubject = cartSubject;
@@ -57,7 +57,9 @@ public class MenuPanel extends JPanel {
         JLabel lblSearch = new JLabel("Tìm kiếm món: ");
         lblSearch.setFont(new Font("Arial", Font.BOLD, 13));
         lblSearch.setForeground(COLOR_ESPRESSO_TEXT);
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
         pnlTopToolbar.add(lblSearch, gbc);
 
         txtSearch = new JTextField();
@@ -66,7 +68,9 @@ public class MenuPanel extends JPanel {
         txtSearch.setBackground(Color.WHITE);
         txtSearch.setForeground(COLOR_ESPRESSO_TEXT);
         txtSearch.setBorder(BorderFactory.createLineBorder(COLOR_COFFEE_BROWN, 1));
-        gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 1.0;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         pnlTopToolbar.add(txtSearch, gbc);
 
@@ -77,7 +81,9 @@ public class MenuPanel extends JPanel {
         btnSearch.setBackground(COLOR_WARM_COPPER);
         btnSearch.setForeground(Color.WHITE);
         btnSearch.setBorder(null);
-        gbc.gridx = 2; gbc.gridy = 0; gbc.weightx = 0;
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
         gbc.fill = GridBagConstraints.NONE;
         pnlTopToolbar.add(btnSearch, gbc);
 
@@ -89,19 +95,21 @@ public class MenuPanel extends JPanel {
         btnAddNewItem.setFocusPainted(false);
         btnAddNewItem.setPreferredSize(new Dimension(180, 32));
         btnAddNewItem.setBorder(null);
-        gbc.gridx = 3; gbc.gridy = 0; gbc.weightx = 0;
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
         gbc.insets = new Insets(5, 15, 5, 0);
         pnlTopToolbar.add(btnAddNewItem, gbc);
 
-        // 1.3 Cụm Nút Bộ Lọc Danh Mục (Theo phong cách thanh tab trên edited-image_2.png)
+        // 1.3 Cụm Nút Bộ Lọc Danh Mục (Theo phong cách thanh tab trên
+        // edited-image_2.png)
         JPanel pnlRadioFilters = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 4));
         pnlRadioFilters.setBackground(COLOR_WARM_CREAM);
-        
+
         TitledBorder titledBorder = BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(COLOR_LATTE_LIGHT, 1), 
-                " DANH MỤC THỰC ĐƠN ", 0, 0, 
-                new Font("Arial", Font.BOLD | Font.ITALIC, 11)
-        );
+                BorderFactory.createLineBorder(COLOR_LATTE_LIGHT, 1),
+                " DANH MỤC THỰC ĐƠN ", 0, 0,
+                new Font("Arial", Font.BOLD | Font.ITALIC, 11));
         titledBorder.setTitleColor(COLOR_COFFEE_BROWN);
         pnlRadioFilters.setBorder(titledBorder);
 
@@ -112,7 +120,7 @@ public class MenuPanel extends JPanel {
 
         // Đồng bộ Font chữ & Màu sắc cho các nút Radio để đạt tương phản cao
         Font radioFont = new Font("Arial", Font.BOLD, 12);
-        for (JRadioButton rdo : new JRadioButton[]{rdoAll, rdoCoffee, rdoBakery, rdoCombo}) {
+        for (JRadioButton rdo : new JRadioButton[] { rdoAll, rdoCoffee, rdoBakery, rdoCombo }) {
             rdo.setFont(radioFont);
             rdo.setBackground(COLOR_WARM_CREAM);
             rdo.setForeground(COLOR_ESPRESSO_TEXT);
@@ -130,7 +138,8 @@ public class MenuPanel extends JPanel {
         pnlRadioFilters.add(rdoBakery);
         pnlRadioFilters.add(rdoCombo);
 
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.gridwidth = 4;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -145,7 +154,8 @@ public class MenuPanel extends JPanel {
         pnlGridMenu = new JPanel(new GridLayout(0, 3, 15, 15));
         pnlGridMenu.setBackground(COLOR_WARM_CREAM);
 
-        // Neo lưới sản phẩm lên phía Bắc để tránh tình trạng các Card bị dãn rộng thô kệch
+        // Neo lưới sản phẩm lên phía Bắc để tránh tình trạng các Card bị dãn rộng thô
+        // kệch
         JPanel pnlGridNorthAnchor = new JPanel(new BorderLayout());
         pnlGridNorthAnchor.setBackground(COLOR_WARM_CREAM);
         pnlGridNorthAnchor.add(pnlGridMenu, BorderLayout.NORTH);
@@ -160,10 +170,22 @@ public class MenuPanel extends JPanel {
         // =========================================================================
         // 3. ĐĂNG KÝ LISTENERS ĐIỀU KHIỂN BỘ LỌC
         // =========================================================================
-        rdoAll.addActionListener(e -> { currentCategoryFilter = "ALL"; loadMenu(); });
-        rdoCoffee.addActionListener(e -> { currentCategoryFilter = "COFFEE"; loadMenu(); });
-        rdoBakery.addActionListener(e -> { currentCategoryFilter = "BAKERY"; loadMenu(); });
-        rdoCombo.addActionListener(e -> { currentCategoryFilter = "COMBO"; loadMenu(); });
+        rdoAll.addActionListener(e -> {
+            currentCategoryFilter = "ALL";
+            loadMenu();
+        });
+        rdoCoffee.addActionListener(e -> {
+            currentCategoryFilter = "COFFEE";
+            loadMenu();
+        });
+        rdoBakery.addActionListener(e -> {
+            currentCategoryFilter = "BAKERY";
+            loadMenu();
+        });
+        rdoCombo.addActionListener(e -> {
+            currentCategoryFilter = "COMBO";
+            loadMenu();
+        });
 
         btnSearch.addActionListener(e -> loadMenu());
         txtSearch.addActionListener(e -> loadMenu());
@@ -192,15 +214,17 @@ public class MenuPanel extends JPanel {
                         continue;
                     }
                 } else if ("BAKERY".equals(currentCategoryFilter)) {
-                    if (!"BAKERY".equals(category)) continue;
+                    if (!"BAKERY".equals(category))
+                        continue;
                 } else if ("COMBO".equals(currentCategoryFilter)) {
-                    if (!"COMBO".equals(category)) continue;
+                    if (!"COMBO".equals(category))
+                        continue;
                 }
             }
 
             // 1. TẠO THẺ PANEL CHỨA SẢN PHẨM (Card có viền Nâu Cà Phê, Nền Trắng Tinh Tế)
-            JPanel pnlItemCard = new JPanel(new BorderLayout(0, 8)); 
-            pnlItemCard.setPreferredSize(new Dimension(160, 180)); 
+            JPanel pnlItemCard = new JPanel(new BorderLayout(0, 8));
+            pnlItemCard.setPreferredSize(new Dimension(160, 180));
             pnlItemCard.setBackground(Color.WHITE);
             pnlItemCard.setBorder(BorderFactory.createLineBorder(COLOR_COFFEE_BROWN, 1, true));
 
@@ -208,13 +232,11 @@ public class MenuPanel extends JPanel {
             JPanel pnlCardHeader = new JPanel(new BorderLayout());
             pnlCardHeader.setBackground(Color.WHITE);
             pnlCardHeader.setBorder(new EmptyBorder(6, 8, 0, 8));
-            
+
             JLabel lblTag = new JLabel(category.replace("COFFEE_", ""));
             lblTag.setFont(new Font("Arial", Font.BOLD, 10));
             lblTag.setForeground(COLOR_LATTE_LIGHT);
             pnlCardHeader.add(lblTag, BorderLayout.WEST);
-
-            pnlItemCard.add(pnlCardHeader, BorderLayout.NORTH);
 
             // MỚI: Nhãn Trạng thái (Góc phải)
             String status = item.getStatus();
@@ -227,15 +249,14 @@ public class MenuPanel extends JPanel {
             pnlItemCard.add(pnlCardHeader, BorderLayout.NORTH);
             // 3. THÂN CARD CHỨA NÚT HIỂN THỊ THÔNG TIN MÓN CHÍNH
             String itemHTML = String.format(
-                "<html><center>"
-                + "<font size='6'>%s</font><br><br>"
-                + "<span style='font-family:Arial; font-size:12px; font-weight:bold; color:#3A2E1F;'>%s</span><br>"
-                + "<span style='font-family:Arial; font-size:11px; color:#967969;'>%,.0f đ</span>"
-                + "</center></html>",
-                item.getIcon() != null ? item.getIcon() : "☕",         
-                item.getName(),         
-                item.getBasePrice()     
-            );
+                    "<html><center>"
+                            + "<font size='6'>%s</font><br><br>"
+                            + "<span style='font-family:Arial; font-size:12px; font-weight:bold; color:#3A2E1F;'>%s</span><br>"
+                            + "<span style='font-family:Arial; font-size:11px; color:#967969;'>%,.0f đ</span>"
+                            + "</center></html>",
+                    item.getIcon() != null ? item.getIcon() : "☕",
+                    item.getName(),
+                    item.getBasePrice());
 
             JButton btnItemMain = new JButton(itemHTML);
             btnItemMain.setBackground(Color.WHITE);
@@ -243,7 +264,7 @@ public class MenuPanel extends JPanel {
             btnItemMain.setFocusPainted(false);
             btnItemMain.setToolTipText(item.getDescription());
             btnItemMain.setHorizontalAlignment(SwingConstants.CENTER);
-            
+
             // Sự kiện click chọn món đưa vào giỏ hàng
             btnItemMain.addActionListener(e -> {
                 Window parentWindow = SwingUtilities.getWindowAncestor(this);
@@ -254,7 +275,8 @@ public class MenuPanel extends JPanel {
             });
             pnlItemCard.add(btnItemMain, BorderLayout.CENTER);
 
-            // 4. ĐÁY THẺ CARD: KHU VỰC THAO TÁC (3 nút Sửa, Xóa, Chọn món thẳng hàng ngang hoàn hảo)
+            // 4. ĐÁY THẺ CARD: KHU VỰC THAO TÁC (3 nút Sửa, Xóa, Chọn món thẳng hàng ngang
+            // hoàn hảo)
             JPanel pnlCardFooter = new JPanel(new GridLayout(1, 3, 4, 0));
             pnlCardFooter.setBackground(Color.WHITE);
             pnlCardFooter.setBorder(new EmptyBorder(0, 6, 6, 6));
@@ -273,15 +295,14 @@ public class MenuPanel extends JPanel {
             btnDelete.setBackground(COLOR_WARM_CREAM);
             btnDelete.setForeground(new Color(217, 83, 79)); // Đỏ dịu cảnh báo
             btnDelete.setBorder(BorderFactory.createLineBorder(COLOR_LATTE_LIGHT, 1));
-            
+
             btnDelete.addActionListener(e -> {
                 int confirm = JOptionPane.showConfirmDialog(
-                    this, "Bạn có chắc chắn muốn xóa món '" + item.getName() + "' không?", 
-                    "Xác nhận hệ thống", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE
-                );
+                        this, "Bạn có chắc chắn muốn xóa món '" + item.getName() + "' không?",
+                        "Xác nhận hệ thống", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    item.setStatus("DELETED"); 
-                    menuRepository.deleteMenuItem(item.getId()); 
+                    item.setStatus("DELETED");
+                    menuRepository.deleteMenuItem(item.getId());
                     JOptionPane.showMessageDialog(this, "Đã cập nhật trạng thái xóa thành công.");
                     loadMenu();
                 }
@@ -293,110 +314,143 @@ public class MenuPanel extends JPanel {
             btnSelect.setBackground(COLOR_WARM_COPPER); // Nút Chọn món có màu Đồng ấm tạo điểm nhấn
             btnSelect.setForeground(Color.WHITE);
             btnSelect.setBorder(null);
-            btnSelect.addActionListener(btnItemMain.getActionListeners()[0]); // Chia sẻ chung logic mở Dialog chọn món
+            // btnSelect.addActionListener(btnItemMain.getActionListeners()[0]); // Chia sẻ
+            // chung logic mở Dialog chọn món
+
+            // ✅ Tạo 1 hàm chung
+            btnSelect.addActionListener(e -> {
+                Window parentWindow = SwingUtilities.getWindowAncestor(this);
+                if (parentWindow instanceof Frame) {
+                    DrinkOptionDialog dialog = new DrinkOptionDialog(
+                            (Frame) parentWindow, item, cartSubject);
+                    dialog.setVisible(true);
+                }
+            });
 
             // Đưa 3 nút vào lưới hàng ngang dưới đáy
             pnlCardFooter.add(btnEdit);
             pnlCardFooter.add(btnDelete);
             pnlCardFooter.add(btnSelect);
-            
+
             pnlItemCard.add(pnlCardFooter, BorderLayout.SOUTH);
 
             // Bổ sung thẻ sản phẩm hoàn chỉnh vào lưới tổng
             pnlGridMenu.add(pnlItemCard);
         }
-        
+
         pnlGridMenu.revalidate();
         pnlGridMenu.repaint();
     }
 
-private void openEditItemDialog(MenuItem item) {
-    JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Sửa Món Ăn", true);
-    dialog.setLayout(new GridLayout(7, 2, 10, 10)); // Tăng lên 7 dòng để thêm nút Hủy nếu cần
-    ((JPanel)dialog.getContentPane()).setBackground(COLOR_WARM_CREAM);
-    ((JPanel)dialog.getContentPane()).setBorder(new EmptyBorder(15, 15, 15, 15));
+    private void openEditItemDialog(MenuItem item) {
+        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Sửa Món Ăn", true);
+        dialog.setLayout(new GridLayout(7, 2, 10, 10)); // Tăng lên 7 dòng để thêm nút Hủy nếu cần
+        ((JPanel) dialog.getContentPane()).setBackground(COLOR_WARM_CREAM);
+        ((JPanel) dialog.getContentPane()).setBorder(new EmptyBorder(15, 15, 15, 15));
 
-    // Khởi tạo các trường nhập liệu với dữ liệu hiện tại của item
-    JTextField txtName = new JTextField(item.getName());
-    JTextField txtPrice = new JTextField(String.format("%.0f", item.getBasePrice()));
-    JTextField txtDesc = new JTextField(item.getDescription());
-    JTextField txtIcon = new JTextField(item.getIcon());
-    
-    JComboBox<String> cbCategory = new JComboBox<>(new String[]{"COFFEE_MACHINE", "COFFEE_TRADITIONAL", "BAKERY", "COMBO"});
-    cbCategory.setSelectedItem(item.getCategory());
-    
-    JComboBox<String> cbStatus = new JComboBox<>(new String[]{"AVAILABLE", "OUT_OF_STOCK"});
-    cbStatus.setSelectedItem(item.getStatus());
+        // Khởi tạo các trường nhập liệu với dữ liệu hiện tại của item
+        JTextField txtName = new JTextField(item.getName());
+        JTextField txtPrice = new JTextField(String.format("%.0f", item.getBasePrice()));
+        JTextField txtDesc = new JTextField(item.getDescription());
+        JTextField txtIcon = new JTextField(item.getIcon());
 
-    // Thêm các thành phần vào Dialog
-    dialog.add(new JLabel("Tên món:")); dialog.add(txtName);
-    dialog.add(new JLabel("Danh mục:")); dialog.add(cbCategory);
-    dialog.add(new JLabel("Giá (đ):")); dialog.add(txtPrice);
-    dialog.add(new JLabel("Mô tả:")); dialog.add(txtDesc);
-    dialog.add(new JLabel("Icon:")); dialog.add(txtIcon);
-    dialog.add(new JLabel("Trạng thái:")); dialog.add(cbStatus);
+        JComboBox<String> cbCategory = new JComboBox<>(
+                new String[] { "COFFEE_MACHINE", "COFFEE_TRADITIONAL", "BAKERY", "COMBO" });
+        cbCategory.setSelectedItem(item.getCategory());
 
-    JButton btnSave = new JButton("Lưu thay đổi");
-    btnSave.setBackground(COLOR_WARM_COPPER);
-    btnSave.setForeground(Color.WHITE);
-    
-    btnSave.addActionListener(e -> {
-        try {
-            // 1. Cập nhật dữ liệu vào object 'item'
-            item.setName(txtName.getText().trim());
-            item.setCategory((String) cbCategory.getSelectedItem());
-            item.setBasePrice(Double.parseDouble(txtPrice.getText().trim()));
-            item.setDescription(txtDesc.getText().trim());
-            item.setIcon(txtIcon.getText().trim());
-            item.setStatus((String) cbStatus.getSelectedItem());
+        JComboBox<String> cbStatus = new JComboBox<>(new String[] { "AVAILABLE", "OUT_OF_STOCK" });
+        cbStatus.setSelectedItem(item.getStatus());
 
-            // 2. Gọi Repository để lưu vào Database
-            if (menuRepository.updateMenuItem(item)) {
-                JOptionPane.showMessageDialog(dialog, "Cập nhật thành công!");
-                dialog.dispose(); // Đóng cửa sổ
-                loadMenu();       // Tải lại giao diện menu
-            } else {
-                JOptionPane.showMessageDialog(dialog, "Lỗi cập nhật database!");
+        // Thêm các thành phần vào Dialog
+        dialog.add(new JLabel("Tên món:"));
+        dialog.add(txtName);
+        dialog.add(new JLabel("Danh mục:"));
+        dialog.add(cbCategory);
+        dialog.add(new JLabel("Giá (đ):"));
+        dialog.add(txtPrice);
+        dialog.add(new JLabel("Mô tả:"));
+        dialog.add(txtDesc);
+        dialog.add(new JLabel("Icon:"));
+        dialog.add(txtIcon);
+        dialog.add(new JLabel("Trạng thái:"));
+        dialog.add(cbStatus);
+
+        JButton btnSave = new JButton("Lưu thay đổi");
+        btnSave.setBackground(COLOR_WARM_COPPER);
+        btnSave.setForeground(Color.WHITE);
+
+        btnSave.addActionListener(e -> {
+            try {
+                // 1. Cập nhật dữ liệu vào object 'item'
+                item.setName(txtName.getText().trim());
+                item.setCategory((String) cbCategory.getSelectedItem());
+                item.setBasePrice(Double.parseDouble(txtPrice.getText().trim()));
+                item.setDescription(txtDesc.getText().trim());
+                item.setIcon(txtIcon.getText().trim());
+                item.setStatus((String) cbStatus.getSelectedItem());
+
+                // 2. Gọi Repository để lưu vào Database
+                if (menuRepository.updateMenuItem(item)) {
+                    JOptionPane.showMessageDialog(dialog, "Cập nhật thành công!");
+                    dialog.dispose(); // Đóng cửa sổ
+                    loadMenu(); // Tải lại giao diện menu
+                } else {
+                    JOptionPane.showMessageDialog(dialog, "Lỗi cập nhật database!");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(dialog, "Giá tiền phải là số!");
             }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(dialog, "Giá tiền phải là số!");
-        }
-    });
+        });
 
-    dialog.add(new JLabel()); // Ô trống cho căn lề
-    dialog.add(btnSave);
-    
-    dialog.pack();
-    dialog.setLocationRelativeTo(this);
-    dialog.setVisible(true);
-}
+        dialog.add(new JLabel()); // Ô trống cho căn lề
+        dialog.add(btnSave);
+
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
 
     private void openAddNewItemDialog() {
         JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Thêm Món Ăn Mới", true);
         dialog.setLayout(new GridLayout(6, 2, 10, 10));
-        ((JPanel)dialog.getContentPane()).setBackground(COLOR_WARM_CREAM);
-        ((JPanel)dialog.getContentPane()).setBorder(new EmptyBorder(15, 15, 15, 15));
+        ((JPanel) dialog.getContentPane()).setBackground(COLOR_WARM_CREAM);
+        ((JPanel) dialog.getContentPane()).setBorder(new EmptyBorder(15, 15, 15, 15));
 
         JTextField txtName = new JTextField();
-        JComboBox<String> cbCategory = new JComboBox<>(new String[]{
-            "COFFEE_MACHINE", "COFFEE_TRADITIONAL", "BAKERY", "COMBO"
+        JComboBox<String> cbCategory = new JComboBox<>(new String[] {
+                "COFFEE_MACHINE", "COFFEE_TRADITIONAL", "BAKERY", "COMBO"
         });
         JTextField txtPrice = new JTextField("0");
         JTextField txtIcon = new JTextField("☕");
         JTextField txtDesc = new JTextField();
 
         Font lblFont = new Font("Arial", Font.BOLD, 12);
-        JLabel l1 = new JLabel("Tên món ăn (*):"); l1.setFont(lblFont); l1.setForeground(COLOR_ESPRESSO_TEXT);
-        JLabel l2 = new JLabel("Danh mục món:"); l2.setFont(lblFont); l2.setForeground(COLOR_ESPRESSO_TEXT);
-        JLabel l3 = new JLabel("Giá cơ bản (đ):"); l3.setFont(lblFont); l3.setForeground(COLOR_ESPRESSO_TEXT);
-        JLabel l4 = new JLabel("Biểu tượng (Icon):"); l4.setFont(lblFont); l4.setForeground(COLOR_ESPRESSO_TEXT);
-        JLabel l5 = new JLabel("Mô tả ngắn:"); l5.setFont(lblFont); l5.setForeground(COLOR_ESPRESSO_TEXT);
+        JLabel l1 = new JLabel("Tên món ăn (*):");
+        l1.setFont(lblFont);
+        l1.setForeground(COLOR_ESPRESSO_TEXT);
+        JLabel l2 = new JLabel("Danh mục món:");
+        l2.setFont(lblFont);
+        l2.setForeground(COLOR_ESPRESSO_TEXT);
+        JLabel l3 = new JLabel("Giá cơ bản (đ):");
+        l3.setFont(lblFont);
+        l3.setForeground(COLOR_ESPRESSO_TEXT);
+        JLabel l4 = new JLabel("Biểu tượng (Icon):");
+        l4.setFont(lblFont);
+        l4.setForeground(COLOR_ESPRESSO_TEXT);
+        JLabel l5 = new JLabel("Mô tả ngắn:");
+        l5.setFont(lblFont);
+        l5.setForeground(COLOR_ESPRESSO_TEXT);
 
-        dialog.add(l1); dialog.add(txtName);
-        dialog.add(l2); dialog.add(cbCategory);
-        dialog.add(l3); dialog.add(txtPrice);
-        dialog.add(l4); dialog.add(txtIcon);
-        dialog.add(l5); dialog.add(txtDesc);
+        dialog.add(l1);
+        dialog.add(txtName);
+        dialog.add(l2);
+        dialog.add(cbCategory);
+        dialog.add(l3);
+        dialog.add(txtPrice);
+        dialog.add(l4);
+        dialog.add(txtIcon);
+        dialog.add(l5);
+        dialog.add(txtDesc);
 
         JButton btnSave = new JButton("Lưu món mới");
         btnSave.setBackground(COLOR_COFFEE_BROWN);
@@ -404,11 +458,12 @@ private void openEditItemDialog(MenuItem item) {
         btnSave.setFont(new Font("Arial", Font.BOLD, 12));
         btnSave.setFocusPainted(false);
         btnSave.setBorder(null);
-        
+
         btnSave.addActionListener(e -> {
             String name = txtName.getText().trim();
-            if (name.isEmpty()) return;
-            
+            if (name.isEmpty())
+                return;
+
             try {
                 double basePrice = Double.parseDouble(txtPrice.getText().trim());
                 String category = (String) cbCategory.getSelectedItem();
@@ -427,11 +482,12 @@ private void openEditItemDialog(MenuItem item) {
 
                 if (menuRepository.insertNewMenuItem(newItem)) {
                     dialog.dispose();
-                    loadMenu(); 
+                    loadMenu();
                 }
-            } catch (NumberFormatException ex) {}
+            } catch (NumberFormatException ex) {
+            }
         });
-        
+
         dialog.add(new JLabel());
         dialog.add(btnSave);
         dialog.pack();

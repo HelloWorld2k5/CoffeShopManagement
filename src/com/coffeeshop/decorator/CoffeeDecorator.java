@@ -1,5 +1,5 @@
-
 package com.coffeeshop.decorator;
+
 import com.coffeeshop.model.MenuItem;
 
 public abstract class CoffeeDecorator implements MenuItem {
@@ -9,7 +9,6 @@ public abstract class CoffeeDecorator implements MenuItem {
         this.decoratedItem = item;
     }
 
-    // Các phương thức lấy thông tin cơ bản giữ nguyên từ item gốc
     @Override public int getId() { return decoratedItem.getId(); }
     @Override public String getName() { return decoratedItem.getName(); }
     @Override public String getCategory() { return decoratedItem.getCategory(); }
@@ -17,7 +16,9 @@ public abstract class CoffeeDecorator implements MenuItem {
     @Override public String getDescription() { return decoratedItem.getDescription(); }
     @Override public String getIcon() { return decoratedItem.getIcon(); }
     @Override public String getStatus() { return decoratedItem.getStatus(); }
-    
-    // Phương thức giá sẽ được ghi đè bởi các Concrete Decorator
     @Override public double getFinalPrice() { return decoratedItem.getFinalPrice(); }
+
+    // ✅ Clone abstract - bắt buộc subclass phải implement
+    @Override
+    public abstract CoffeeDecorator clone();
 }

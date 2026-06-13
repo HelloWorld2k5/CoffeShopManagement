@@ -1,50 +1,41 @@
 package com.coffeeshop.adapter;
 
+import com.coffeeshop.adapter.legacy.LegacyTxtWriter;
 import com.coffeeshop.model.Invoice;
 import com.coffeeshop.model.InvoiceItem;
 import com.coffeeshop.util.MoneyUtil;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.nio.charset.StandardCharsets;
-
-/*
- * Adapter Pattern:
- * Xuất hóa đơn ra TXT bằng thư viện có sẵn của Java.
- */
 public class TxtInvoiceAdapter implements InvoicePrinter {
+
+    private final LegacyTxtWriter writer = new LegacyTxtWriter();
 
     @Override
     public void print(Invoice invoice, String outputPath) throws Exception {
-        try (BufferedWriter writer = new BufferedWriter(
-                new FileWriter(outputPath, StandardCharsets.UTF_8))) {
+        StringBuilder sb = new StringBuilder();
 
-            writer.write("HOA DON BAN HANG");
-            writer.newLine();
-            writer.write("Ma HD: " + invoice.getInvoiceId());
-            writer.newLine();
-            writer.write("----------------------------------------");
-            writer.newLine();
+        sb.append("HOA DON BAN HANG\n");
+        sb.append("Ma HD: ").append(invoice.getInvoiceId()).append("\n");
+        sb.append("Ma ban: ").append(invoice.getTableId() == null ? "N/A" : invoice.getTableId()).append("\n");
+        sb.append("Ma nhan vien: ").append(invoice.getUserId() == null ? "N/A" : invoice.getUserId()).append("\n");
+        sb.append("Phuong thuc: ").append(invoice.getPaymentMethod()).append("\n");
+        sb.append("Thoi gian: ").append(invoice.getCreatedAt()).append("\n");
+        sb.append("----------------------------------------\n");
 
-            for (InvoiceItem item : invoice.getItems()) {
-                writer.write(item.getDishName() + " x" + item.getQuantityOrdered()
-                        + " = " + MoneyUtil.format(item.getTotalAmountAfterDiscount()));
-                writer.newLine();
-            }
-
-            writer.write("----------------------------------------");
-            writer.newLine();
-            writer.write("Tong truoc thue: " + MoneyUtil.format(invoice.getSubtotal()));
-            writer.newLine();
-            writer.write("VAT: " + MoneyUtil.format(invoice.getVatAmount()));
-            writer.newLine();
-            writer.write("Giam gia: " + MoneyUtil.format(invoice.getDiscountAmount()));
-            writer.newLine();
-            writer.write("Thanh tien: " + MoneyUtil.format(invoice.getTotalAmount()));
-            writer.newLine();
-            writer.write("Tien khach dua: " + MoneyUtil.format(invoice.getAmountPaid()));
-            writer.newLine();
-            writer.write("Tien tra lai: " + MoneyUtil.format(invoice.getChangeAmount()));
+        for (InvoiceItem item : invoice.getItems()) {
+            sb.append(item.getDishName())
+                    .append(" x").append(item.getQuantityOrdered())
+                    .append(" = ").append(MoneyUtil.format(item.getTotalAmountAfterDiscount()))
+                    .append("\n");
         }
+
+        sb.append("----------------------------------------\n");
+        sb.append("Tong truoc thue: ").append(MoneyUtil.format(invoice.getSubtotal())).append("\n");
+        sb.append("VAT: ").append(MoneyUtil.format(invoice.getVatAmount())).append("\n");
+        sb.append("Giam gia: ").append(MoneyUtil.format(invoice.getDiscountAmount())).append("\n");
+        sb.append("Thanh tien: ").append(MoneyUtil.format(invoice.getTotalAmount())).append("\n");
+        sb.append("Tien khach dua: ").append(MoneyUtil.format(invoice.getAmountPaid())).append("\n");
+        sb.append("Tien tra lai: ").append(MoneyUtil.format(invoice.getChangeAmount())).append("\n");
+
+        writer.write(sb.toString(), outputPath);
     }
 }

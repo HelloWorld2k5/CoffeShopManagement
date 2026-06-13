@@ -10,6 +10,12 @@ public class AlmondMilkDecorator extends CoffeeDecorator {
         this.priceExtra = priceExtra;
     }
 
+    // ✅ Copy constructor
+    public AlmondMilkDecorator(AlmondMilkDecorator other) {
+        super(other.decoratedItem.clone()); // 🔑 Clone đệ quy
+        this.priceExtra = other.priceExtra;  // Primitive → copy trực tiếp
+    }
+
     @Override
     public double getFinalPrice() {
         return super.getFinalPrice() + priceExtra;
@@ -53,5 +59,11 @@ public class AlmondMilkDecorator extends CoffeeDecorator {
     @Override
     public void setStatus(String status) {
         decoratedItem.setStatus(status);
+    }
+
+    // ✅ Clone với covariant return type
+    @Override
+    public AlmondMilkDecorator clone() {
+        return new AlmondMilkDecorator(this);
     }
 }

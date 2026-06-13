@@ -9,9 +9,11 @@ public class User {
     private UserRole userRole;
     private UserStatus userStatus;
 
-    public User() {}
+    public User() {
+    }
 
-    public User(int userId, String username, String encryptedPassword, String fullName, UserRole userRole, UserStatus userStatus) {
+    public User(int userId, String username, String encryptedPassword, String fullName, UserRole userRole,
+            UserStatus userStatus) {
         this.userId = userId;
         this.username = username;
         this.encryptedPassword = encryptedPassword;
@@ -69,7 +71,7 @@ public class User {
     }
 
     // Thêm vào class User
-public String getRole() {
-    return (this.userRole != null) ? this.userRole.name() : "STAFF";
-}
+    public String getRole() {
+        return (this.userRole != null) ? this.userRole.name() : "STAFF";
+    }
 }

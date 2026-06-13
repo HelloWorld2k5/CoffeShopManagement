@@ -1,7 +1,7 @@
 
 package com.coffeeshop.model;
 
-public interface  MenuItem {
+public interface MenuItem {
     int getId();                // idMonAn
     String getName();           // tenMonAn
     String getCategory();       // danhMucMonAn
@@ -17,4 +17,5 @@ public interface  MenuItem {
     void setDescription(String description);
     void setIcon(String icon);
     void setStatus(String status);
+    MenuItem clone();
 }

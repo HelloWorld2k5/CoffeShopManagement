@@ -3,6 +3,8 @@ package com.coffeeshop.view;
 import com.coffeeshop.controller.AuthController;
 import com.coffeeshop.model.CurrentUser;
 import com.coffeeshop.model.User;
+import com.coffeeshop.model.UserRole;
+
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -35,10 +37,6 @@ public class LoginFrame extends JFrame {
         initUI();
         initEvents();
     }
-
-
-
-
 
     private void initUI() {
         JPanel root = new JPanel();
@@ -194,55 +192,56 @@ public class LoginFrame extends JFrame {
         txtPassword.addActionListener(e -> doLogin());
     }
 
-private void doLogin() {
-    // 1. Lấy dữ liệu từ UI trước
-    String username = txtUsername.getText().trim();
-    String password = new String(txtPassword.getPassword());
+    private void doLogin() {
+        // 1. Lấy dữ liệu từ UI trước
+        String username = txtUsername.getText().trim();
+        String password = new String(txtPassword.getPassword());
 
-    if (username.isEmpty() || password.isEmpty()) {
-        lblStatus.setText("Vui lòng nhập tài khoản và mật khẩu");
-        return;
-    }
-
-    // 2. Cập nhật trạng thái UI
-    lblStatus.setText("Đang xác thực...");
-    btnLogin.setEnabled(false); // Chặn người dùng nhấn nhiều lần
-
-    // 3. Sử dụng SwingWorker để xử lý DB ở luồng nền (Background Thread)
-    new SwingWorker<User, Void>() {
-        @Override
-        protected User doInBackground() throws Exception {
-            // Logic này chạy ở luồng khác, không làm treo UI
-            return authController.handleLogin(username, password);
+        if (username.isEmpty() || password.isEmpty()) {
+            lblStatus.setText("Vui lòng nhập tài khoản và mật khẩu");
+            return;
         }
 
-        @Override
-        protected void done() {
-            try {
-                User user = get(); // Lấy kết quả từ doInBackground
-                btnLogin.setEnabled(true);
+        // 2. Cập nhật trạng thái UI
+        lblStatus.setText("Đang xác thực...");
+        btnLogin.setEnabled(false); // Chặn người dùng nhấn nhiều lần
 
-                if (user == null) {
-                    lblStatus.setText("Sai tài khoản hoặc mật khẩu");
-                    txtPassword.setText("");
-                    return;
-                }
-
-                // Đăng nhập thành công
-                CurrentUser.getInstance().login(user);
-                
-                com.coffeeshop.factory.UIFactory factory = "ADMIN".equalsIgnoreCase(user.getRole()) 
-                    ? new com.coffeeshop.factory.AdminUIFactory() 
-                    : new com.coffeeshop.factory.StaffUIFactory();
-                new com.coffeeshop.view.MainFrame(factory).setVisible(true);
-                dispose();
-                
-            } catch (Exception e) {
-                lblStatus.setText("Lỗi: " + e.getMessage());
-                btnLogin.setEnabled(true);
-                e.printStackTrace(); // Xem chi tiết lỗi trong Terminal
+        // 3. Sử dụng SwingWorker để xử lý DB ở luồng nền (Background Thread)
+        new SwingWorker<User, Void>() {
+            @Override
+            protected User doInBackground() throws Exception {
+                // Logic này chạy ở luồng khác, không làm treo UI
+                return authController.handleLogin(username, password);
             }
-        }
-    }.execute();
-}
+
+            @Override
+            protected void done() {
+                try {
+                    User user = get(); // Lấy kết quả từ doInBackground
+                    btnLogin.setEnabled(true);
+
+                    if (user == null) {
+                        lblStatus.setText("Sai tài khoản hoặc mật khẩu");
+                        txtPassword.setText("");
+                        return;
+                    }
+
+                    // Đăng nhập thành công
+                    CurrentUser.getInstance().login(user);
+
+                    com.coffeeshop.factory.UIFactory factory = (user.getUserRole() == UserRole.ADMIN)
+                            ? new com.coffeeshop.factory.AdminUIFactory()
+                            : new com.coffeeshop.factory.StaffUIFactory();
+
+                    new com.coffeeshop.view.MainFrame(factory).setVisible(true);
+                    dispose();
+
+                } catch (Exception e) {
+                    lblStatus.setText("Lỗi: " + e.getMessage());
+                    btnLogin.setEnabled(true);
+                    e.printStackTrace(); // Xem chi tiết lỗi trong Terminal
+                }
+            }
+        }.execute();
+    }
 }

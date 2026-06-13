@@ -1,6 +1,8 @@
 package com.coffeeshop.observer;
 
 import com.coffeeshop.model.MenuItem;
+import com.coffeeshop.model.TableItem;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +74,30 @@ public class CartSubject implements Subject {
 
     public int getCurrentTableId() {
         return currentTableId;
+    }
+
+    public boolean hasOrder(int tableId) {
+
+        List<OrderItem> cart = tableCarts.get(tableId);
+
+        return cart != null
+                && !cart.isEmpty();
+    }
+
+    public void refreshTableStatus(
+            List<TableItem> tables) {
+
+        for (TableItem table : tables) {
+
+            if (hasOrder(table.getId())) {
+
+                table.setStatus("BUSY");
+
+            } else {
+
+                table.setStatus("FREE");
+            }
+        }
     }
 
     private void saveState() {
@@ -178,33 +204,30 @@ public class CartSubject implements Subject {
     }
 
     // Thêm đoạn này vào trong lớp CartSubject.java
-public boolean copyOrderToTable(int targetTableId) {
-    if (currentTableId == -1 || currentTableId == targetTableId) {
-        return false;
+    public boolean copyOrderToTable(int targetTableId) {
+        if (currentTableId == -1 || currentTableId == targetTableId) {
+            return false;
+        }
+
+        List<OrderItem> currentItems = tableCarts.get(currentTableId);
+        if (currentItems == null || currentItems.isEmpty()) {
+            return false;
+        }
+
+        // Sao chép sang bàn mới (Tạo danh sách mới để tránh tham chiếu chung)
+        List<OrderItem> newItems = new ArrayList<>();
+        for (OrderItem oi : currentItems) {
+            // Tạo một OrderItem mới dựa trên thông tin cũ
+            newItems.add(new OrderItem(oi.getItem(), oi.getQuantity(), oi.getNote()));
+        }
+
+        tableCarts.put(targetTableId, newItems);
+        notifyObservers(); // Thông báo để cập nhật UI
+        return true;
     }
-
-    List<OrderItem> currentItems = tableCarts.get(currentTableId);
-    if (currentItems == null || currentItems.isEmpty()) {
-        return false;
-    }
-
-    // Sao chép sang bàn mới (Tạo danh sách mới để tránh tham chiếu chung)
-    List<OrderItem> newItems = new ArrayList<>();
-    for (OrderItem oi : currentItems) {
-        // Tạo một OrderItem mới dựa trên thông tin cũ
-        newItems.add(new OrderItem(oi.getItem(), oi.getQuantity(), oi.getNote()));
-    }
-
-    tableCarts.put(targetTableId, newItems);
-    notifyObservers(); // Thông báo để cập nhật UI
-    return true;
-}
-
-
-
 
     public void addItem(MenuItem item) {
-        addItem(item, 1, ""); 
+        addItem(item, 1, "");
     }
 
     // Phương thức chính
@@ -233,6 +256,5 @@ public boolean copyOrderToTable(int targetTableId) {
         // Nếu chưa có, thêm mới
         cart.add(new OrderItem(item, quantity, note));
         notifyObservers();
-    }    
-
+    }
 }

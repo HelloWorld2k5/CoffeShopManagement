@@ -1,8 +1,11 @@
 package com.coffeeshop.factory;
+
 import com.coffeeshop.view.LoginFrame;
 import java.awt.*;
 import javax.swing.*;
+
 public class StaffUIFactory implements UIFactory {
+
     @Override
     public JPanel createSidebar(com.coffeeshop.view.MainFrame mainFrame) {
         JPanel panel = new JPanel();
@@ -18,11 +21,11 @@ public class StaffUIFactory implements UIFactory {
         panel.add(btnHistory);
 
         // Đẩy nút Đăng xuất xuống dưới cùng
-        panel.add(Box.createVerticalGlue()); 
-        
-        JButton btnLogout = new JButton("Đăng xuất");
-        btnLogout.setBackground(new Color(231, 76, 60)); // Màu đỏ cảnh báo
-        btnLogout.setForeground(Color.WHITE);
+        panel.add(Box.createVerticalGlue());
+
+        JButton btnLogout = createMenuButton("Đăng xuất");
+        btnLogout.setBackground(new Color(165, 42, 42)); // Màu đỏ cảnh báo
+        // btnLogout.setForeground(Color.WHITE);
         btnLogout.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnLogout.addActionListener(e -> logout(mainFrame));
         panel.add(btnLogout);
@@ -38,15 +41,21 @@ public class StaffUIFactory implements UIFactory {
     }
 
     private void logout(com.coffeeshop.view.MainFrame mainFrame) {
-        int confirm = JOptionPane.showConfirmDialog(mainFrame, 
-            "Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(mainFrame,
+                "Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             mainFrame.dispose(); // Đóng cửa sổ hiện tại
             new LoginFrame().setVisible(true); // Mở lại form Login (Thay LoginFrame bằng tên class của bạn)
         }
     }
+
     @Override
-    public String getDashboardTitle() { return "Coffee 175"; }
+    public String getDashboardTitle() {
+        return "Coffee 175";
+    }
+
     @Override
-    public String getRole(){return "Nhân viên";}
+    public String getRole() {
+        return "Nhân viên";
+    }
 }

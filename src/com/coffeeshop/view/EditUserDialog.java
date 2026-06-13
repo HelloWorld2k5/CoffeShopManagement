@@ -4,6 +4,8 @@ import com.coffeeshop.model.User;
 import com.coffeeshop.model.UserRole;
 import com.coffeeshop.model.UserStatus;
 import com.coffeeshop.repository.UserRepository;
+import com.coffeeshop.util.PasswordUtil;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -42,9 +44,9 @@ public class EditUserDialog extends JDialog {
             user.setUserRole((UserRole) cbRole.getSelectedItem());
             user.setUserStatus((UserStatus) cbStatus.getSelectedItem());
             // 2. Xử lý mật khẩu
-            String newPass = new String(txtNewPassword.getPassword());
+            String newPass = new String(PasswordUtil.sha256(String.valueOf(txtNewPassword.getPassword())));
             if (!newPass.isEmpty()) {
-                user.setEncryptedPassword(newPass); 
+                user.setEncryptedPassword(newPass);
             }
             
             // 3. Gửi lên DB

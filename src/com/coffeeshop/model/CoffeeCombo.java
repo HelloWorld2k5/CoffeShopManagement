@@ -9,7 +9,8 @@ public class CoffeeCombo implements MenuItem {
     private String icon;
     private String status;
 
-    public CoffeeCombo(int id, String name, String category, double basePrice, String description, String icon, String status) {
+    public CoffeeCombo(int id, String name, String category, double basePrice, 
+                       String description, String icon, String status) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -17,6 +18,17 @@ public class CoffeeCombo implements MenuItem {
         this.description = description;
         this.icon = icon;
         this.status = status;
+    }
+
+    // ✅ Copy constructor
+    public CoffeeCombo(CoffeeCombo other) {
+        this.id = other.getId();
+        this.name = other.getName();
+        this.category = other.getCategory();
+        this.basePrice = other.getBasePrice();
+        this.description = other.getDescription();
+        this.icon = other.getIcon();
+        this.status = other.getStatus();
     }
 
     @Override public int getId() { return id; }
@@ -28,11 +40,16 @@ public class CoffeeCombo implements MenuItem {
     @Override public String getIcon() { return icon; }
     @Override public String getStatus() { return status; }
 
-    // === CÁC HÀM SETTER ĐƯỢC THÊM MỚI ===
     @Override public void setName(String name) { this.name = name; }
     @Override public void setCategory(String category) { this.category = category; }
     @Override public void setBasePrice(double basePrice) { this.basePrice = basePrice; }
     @Override public void setDescription(String description) { this.description = description; }
     @Override public void setIcon(String icon) { this.icon = icon; }
     @Override public void setStatus(String status) { this.status = status; }
+
+    // ✅ Clone với covariant return type
+    @Override
+    public CoffeeCombo clone() {
+        return new CoffeeCombo(this);
+    }
 }

@@ -12,7 +12,7 @@
 coffee-shop-management/
 │
 ├── .vscode/
-│   └── launch.json
+│   └── settings.json
 ├── lib/
 │   └── (thư viện JDBC / file export / dependency ngoài)
 ├── src/
