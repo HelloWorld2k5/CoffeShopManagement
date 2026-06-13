@@ -1,5 +1,6 @@
 package com.coffeeshop.view;
 
+import com.coffeeshop.config.AppConfig;
 import com.coffeeshop.model.CurrentUser;
 import com.coffeeshop.model.Invoice;
 import com.coffeeshop.model.InvoiceItem;
@@ -10,6 +11,8 @@ import com.coffeeshop.observer.Subject;
 import com.coffeeshop.service.PaymentService;
 import com.coffeeshop.util.DateTimeUtil;
 import com.coffeeshop.util.InvoiceIdGenerator;
+import com.coffeeshop.util.MoneyUtil;
+import com.coffeeshop.util.StatusUtil;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -308,12 +311,12 @@ public class CartPanel extends JPanel implements Observer {
         JPopupMenu tableMenu = new JPopupMenu("Chọn bàn sao chép đơn sang:");
 
         for (TableItem table : listTablesMemory) {
-            if ("FREE".equalsIgnoreCase(table.getStatus()) && table.getId() != currentTable.getId()) {
+            if (StatusUtil.isTableFree(table.getStatus()) && table.getId() != currentTable.getId()) {
                 JMenuItem item = new JMenuItem("Sao chép sang: " + table.getName());
                 item.addActionListener(e -> {
                     boolean success = cartSubject.copyOrderToTable(table.getId());
                     if (success) {
-                        table.setStatus("BUSY");
+                        table.setStatus(StatusUtil.TABLE_BUSY);
                         cbTables.repaint();
                         JOptionPane.showMessageDialog(this, "Đã sao chép đơn thành công sang " + table.getName());
                     }
@@ -338,10 +341,10 @@ public class CartPanel extends JPanel implements Observer {
         listTablesMemory.clear();
 
         // Cái này phải load ra từ db chứ!!!!!!!!!!!!!!!!!
-        listTablesMemory.add(new TableItem(1, "Bàn số 01", "FREE"));
-        listTablesMemory.add(new TableItem(2, "Bàn số 02", "FREE"));
-        listTablesMemory.add(new TableItem(3, "Bàn số 03", "FREE"));
-        listTablesMemory.add(new TableItem(4, "Bàn số 04", "FREE"));
+        listTablesMemory.add(new TableItem(1, "Bàn số 01", StatusUtil.TABLE_FREE));
+        listTablesMemory.add(new TableItem(2, "Bàn số 02", StatusUtil.TABLE_FREE));
+        listTablesMemory.add(new TableItem(3, "Bàn số 03", StatusUtil.TABLE_FREE));
+        listTablesMemory.add(new TableItem(4, "Bàn số 04", StatusUtil.TABLE_FREE));
 
         for (TableItem table : listTablesMemory) {
             cbTables.addItem(table);
@@ -382,27 +385,26 @@ public class CartPanel extends JPanel implements Observer {
             tableModel.addRow(new Object[] {
                     order.getItem().getName(),
                     order,
-                    String.format("%,.0f đ", amount),
+                    MoneyUtil.format(amount),
                     order
             });
 
             subtotal += amount;
         }
 
-        double vat = subtotal * 0.08;
+        // Lấy VAT rate từ AppConfig
+        double vatRate = AppConfig.getInstance().getVatRate();
+        double vat = subtotal * vatRate;
         double total = subtotal + vat;
 
         lblSubTotal.setText(
                 "Tiền nước gốc: "
-                        + String.format("%,.0f đ", subtotal));
+                        + MoneyUtil.format(subtotal));
 
-        lblTax.setText(
-                "Thuế VAT (8%): "
-                        + String.format("%,.0f đ", vat));
+        lblTax.setText("Thuế VAT (" + (vatRate * 100) + "%): " + MoneyUtil.format(vat));
 
-        lblTotal.setText(
-                "TỔNG CỘNG: "
-                        + String.format("%,.0f đ", total));
+        lblTotal.setText("TỔNG CỘNG: " + MoneyUtil.format(total));
+
     }
 
     private Invoice createInvoiceFromCart() {

@@ -2,6 +2,8 @@ package com.coffeeshop.view;
 
 import com.coffeeshop.model.Invoice;
 import com.coffeeshop.repository.InvoiceRepository;
+import com.coffeeshop.util.MoneyUtil;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -49,7 +51,7 @@ public class InvoiceHistoryPanel extends JPanel {
             Object[] row = {
                     inv.getInvoiceId(),
                     inv.getTableId() != null ? "Bàn " + inv.getTableId() : "Mang về",
-                    String.format("%,.0f đ", inv.getTotalAmount()),
+                    MoneyUtil.format(inv.getTotalAmount()),
                     inv.getCreatedAt() != null ? inv.getCreatedAt().format(formatter) : "",
                     inv.getPaymentMethod(),
                     "Xem Chi Tiết"

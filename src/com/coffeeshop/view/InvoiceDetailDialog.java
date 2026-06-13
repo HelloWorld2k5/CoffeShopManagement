@@ -1,6 +1,8 @@
 package com.coffeeshop.view;
 import com.coffeeshop.model.Invoice;
 import com.coffeeshop.model.InvoiceItem;
+import com.coffeeshop.util.MoneyUtil;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -30,8 +32,8 @@ public class InvoiceDetailDialog extends JDialog {
             model.addRow(new Object[]{
             displayDishName, // Tên món kèm topping
             item.getQuantityOrdered(),
-            String.format("%,.0f", item.getPriceAtTime()),
-            String.format("%,.0f", item.getTotalAmountAfterDiscount())
+            MoneyUtil.format(item.getPriceAtTime()),
+            MoneyUtil.format(item.getTotalAmountAfterDiscount())
             });
         }
         JTable table = new JTable(model);

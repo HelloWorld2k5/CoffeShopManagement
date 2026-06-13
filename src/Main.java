@@ -13,9 +13,6 @@ public class Main {
             e.printStackTrace();
         }
 
-        // 2. Khởi tạo tài nguyên (Ví dụ: DB connection singleton)
-        // DatabaseConnection.getInstance().connect();
-
         // 3. Chạy giao diện
         SwingUtilities.invokeLater(() -> {
             LoginFrame loginFrame = new LoginFrame();

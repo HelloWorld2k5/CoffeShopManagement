@@ -6,6 +6,9 @@ import com.coffeeshop.model.CoffeeItem;
 import com.coffeeshop.model.MenuItem;
 import com.coffeeshop.observer.CartSubject;
 import com.coffeeshop.repository.MenuRepository;
+import com.coffeeshop.util.MoneyUtil;
+import com.coffeeshop.util.StatusUtil;
+
 import java.awt.*;
 import java.util.List;
 import javax.swing.*;
@@ -199,7 +202,7 @@ public class MenuPanel extends JPanel {
         String searchKeyword = txtSearch.getText().trim().toLowerCase();
 
         for (MenuItem item : items) {
-            if (item == null || !"AVAILABLE".equalsIgnoreCase(item.getStatus())) {
+            if (item == null || !StatusUtil.isItemAvailable(item.getStatus())) {
                 continue;
             }
 
@@ -251,12 +254,12 @@ public class MenuPanel extends JPanel {
             String itemHTML = String.format(
                     "<html><center>"
                             + "<font size='6'>%s</font><br><br>"
-                            + "<span style='font-family:Arial; font-size:12px; font-weight:bold; color:#3A2E1F;'>%s</span><br>"
-                            + "<span style='font-family:Arial; font-size:11px; color:#967969;'>%,.0f đ</span>"
+                            + "<span style='font-family:Arial; font-size:12px; font-weight:bold;'>%s</span><br>"
+                            + "<span style='font-family:Arial; font-size:11px; color:#967969;'>%s</span>"
                             + "</center></html>",
                     item.getIcon() != null ? item.getIcon() : "☕",
                     item.getName(),
-                    item.getBasePrice());
+                    MoneyUtil.format(item.getBasePrice()));
 
             JButton btnItemMain = new JButton(itemHTML);
             btnItemMain.setBackground(Color.WHITE);

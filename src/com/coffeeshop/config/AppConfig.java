@@ -38,6 +38,7 @@ public class AppConfig {
     public static synchronized AppConfig getInstance() {
         if (instance == null) {
             instance = new AppConfig();
+            instance.loadSystemConfig();
         }
         return instance;
     }
@@ -51,11 +52,15 @@ public class AppConfig {
             String vatRateStr = configRepository.getConfigValue("VAT_RATE");
             if (vatRateStr != null) {
                 this.vatRate = Double.parseDouble(vatRateStr);
+                System.out.println("✅ Loaded VAT_RATE: " + this.vatRate);
+            } else {
+                System.out.println("⚠️ VAT_RATE not found in DB, using default: " + this.vatRate);
             }
 
             String shopNameStr = configRepository.getConfigValue("TEN_QUAN");
             if (shopNameStr != null) {
                 this.shopName = shopNameStr;
+                System.out.println("✅ Loaded TEN_QUAN: " + this.shopName);
             }
 
             String currencyStr = configRepository.getConfigValue("CURRENCY");
@@ -63,7 +68,7 @@ public class AppConfig {
                 this.currency = currencyStr;
             }
         } catch (Exception e) {
-            System.err.println("Lỗi khi load cấu hình hệ thống: " + e.getMessage());
+            System.err.println("❌ Lỗi khi load cấu hình hệ thống: " + e.getMessage());
             // Sử dụng giá trị mặc định nếu có lỗi
         }
     }
