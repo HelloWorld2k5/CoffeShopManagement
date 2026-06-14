@@ -20,7 +20,7 @@ public class MenuPanel extends JPanel {
 
     private JTextField txtSearch;
     private JButton btnSearch;
-    private JRadioButton rdoAll, rdoCoffee, rdoBakery, rdoCombo,rdoCoffeeMachine,rdoCoffeeTrad;
+    private JRadioButton rdoAll, rdoBakery, rdoCombo,rdoCoffeeMachine,rdoCoffeeTrad;
     private ButtonGroup filterGroup;
     private JButton btnAddNewItem;
 
