@@ -33,7 +33,7 @@ public class CoffeeTraditionalItem implements MenuItem{
     @Override public void setIcon(String icon) { this.icon = icon; }
     @Override public void setStatus(String status) { this.status = status; }
 
-    public CoffeeTraditionalItem(CoffeeMachineItem other) {
+    public CoffeeTraditionalItem(CoffeeTraditionalItem other) {
         this.id = other.getId();
         this.name = other.getName();
         this.category = other.getCategory();

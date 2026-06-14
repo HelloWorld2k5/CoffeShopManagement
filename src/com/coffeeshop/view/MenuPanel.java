@@ -374,7 +374,7 @@ public class MenuPanel extends JPanel {
 
         JButton btnSave = new JButton("Lưu thay đổi");
         btnSave.setBackground(COLOR_WARM_COPPER);
-        btnSave.setForeground(Color.WHITE);
+        btnSave.setForeground(Color.BLACK);
 
         btnSave.addActionListener(e -> {
             try {
